@@ -1,5 +1,6 @@
 import "./result_style.css";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Result_page = () => {
   return (
@@ -10,8 +11,12 @@ const Result_page = () => {
       <div className="complete_text">You've completed the Quiz!</div>
       <div className="score_text"></div>
       <div className="buttons">
-        <button className="restart">Replay Quiz</button>
-        <button className="quit">Quit Quiz</button>
+        <Link to="./start_page" className="restart btn">
+          Replay Quiz
+        </Link>
+        <Link to="./" className="quit btn">
+          Quit Quiz
+        </Link>
       </div>
     </div>
   );

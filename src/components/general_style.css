@@ -117,7 +117,7 @@ footer .total_que span p:first-child {
   padding-left: 0px;
 }
 
-footer button {
+footer .button {
   height: 40px;
   padding: 0 13px;
   font-size: 18px;
@@ -130,37 +130,16 @@ footer button {
   background: #007bff;
   border: 1px solid #007bff;
   line-height: 10px;
-  opacity: 0;
   pointer-events: none;
   transform: scale(0.95);
   transition: all 0.3s ease;
 }
 
-footer button:hover {
+.buttons .restart:hover {
   background: #0263ca;
 }
 
-footer button.show {
-  opacity: 1;
-  pointer-events: auto;
-  transform: scale(1);
-}
-
-.buttons button.restart {
-  color: #fff;
-  background: #007bff;
-}
-
-.buttons button.restart:hover {
-  background: #0263ca;
-}
-
-.buttons button.quit {
-  color: #007bff;
-  background: #fff;
-}
-
-.buttons button.quit:hover {
-  color: #fff;
-  background: #007bff;
+.buttons .quit:hover {
+  color: rgba(255, 49, 49, 0.801);
+  border-color: rgba(255, 49, 49, 0.801) !important;
 }

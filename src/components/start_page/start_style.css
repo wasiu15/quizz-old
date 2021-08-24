@@ -6,7 +6,8 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.start_btn button {
+.start_link {
+  text-decoration: none;
   font-size: 25px;
   font-weight: 500;
   color: #007bff;
@@ -16,4 +17,17 @@
   border-radius: 5px;
   background: #fff;
   cursor: pointer;
+}
+
+@media (max-width: 500px) {
+  .start_link {
+    font-size: 20px;
+    padding: 10px 20px;
+  }
+}
+@media (max-width: 400px) {
+  .start_link {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
 }

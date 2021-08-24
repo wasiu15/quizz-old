@@ -4,23 +4,18 @@
 .result_box {
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(0, -50%);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.result_box {
   pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1);
   background: #fff;
   border-radius: 5px;
   display: flex;
   padding: 25px 30px;
-  width: 450px;
+  width: 60%;
+  margin: 0 20%;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  transform: translate(-50%, -50%) scale(0.9);
   transition: all 0.3s ease;
 }
 
@@ -32,6 +27,7 @@
 
 .result_box .complete_text {
   font-size: 20px;
+  text-align: center;
   font-weight: 500;
 }
 
@@ -52,10 +48,12 @@
   margin: 20px 0;
 }
 
-.result_box .buttons button {
+.result_box .buttons .btn {
+  text-decoration: none;
   margin: 0 10px;
-  height: 45px;
-  padding: 0 20px;
+
+  height: fit-content;
+  padding: 10px 20px;
   font-size: 18px;
   font-weight: 500;
   cursor: pointer;
@@ -64,4 +62,32 @@
   border-radius: 5px;
   border: 1px solid #007bff;
   transition: all 0.3s ease;
+}
+
+@media (max-width: 900px) {
+  .result_box {
+    width: 80%;
+    margin: 0 10%;
+  }
+}
+
+@media (max-width: 520px) {
+  .result_box {
+    width: 90%;
+    margin: 0 5%;
+  }
+  .result_box .complete_text {
+    font-size: 18px;
+  }
+  .result_box .buttons .btn {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 403px) {
+  .result_box .buttons .btn {
+    font-size: 10px;
+    padding: 8px 8px;
+    text-align: center;
+  }
 }

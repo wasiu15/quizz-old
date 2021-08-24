@@ -1,23 +1,12 @@
-.info_box.activeInfo {
-}
-
 .info_box {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.info_box {
-  pointer-events: auto;
-  transform: translate(-50%, -50%) scale(1);
-  width: 540px;
   background: #fff;
   border-radius: 5px;
   transform: translate(-50%, -50%) scale(0.9);
-  pointer-events: none;
-  transition: all 0.3s ease;
+  width: fit-content;
 }
 
 .info_box .info-title {
@@ -33,7 +22,14 @@
 }
 
 .info_box .info-list {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 8px;
   padding: 15px 30px;
+}
+.info_box .info-list > span {
+  align-self: center;
+  font-size: 18px;
 }
 
 .info_box .info-list .info {
@@ -54,7 +50,8 @@
   border-top: 1px solid lightgrey;
 }
 
-.info_box .buttons button {
+.info_box .buttons .btn {
+  text-decoration: none;
   margin: 0 5px;
   height: 40px;
   width: 100px;
@@ -62,8 +59,37 @@
   font-weight: 500;
   cursor: pointer;
   border: none;
+  text-align: center;
+  padding-top: 7px;
   outline: none;
   border-radius: 5px;
   border: 1px solid #007bff;
   transition: all 0.3s ease;
+}
+
+.buttons .restart {
+  color: #fff;
+  background: #007bff;
+}
+
+.buttons .quit {
+  color: #007bff;
+  background: #fff;
+}
+
+@media (max-width: 450px) {
+  .info_box .info-title {
+    font-size: 18px;
+  }
+  .info_box .info-list .info,
+  .info_box .info-list .info span {
+    font-size: 14px;
+  }
+  .info_box .info-list > span {
+    font-size: 16px;
+  }
+  .info_box .buttons .btn {
+    font-size: 15px;
+    padding-top: 8px;
+  }
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./rules_style.css";
 
 const Rules_page = () => {
@@ -8,25 +9,34 @@ const Rules_page = () => {
         <span>Some Rules of this Quiz</span>
       </div>
       <div className="info-list">
+        <span className="info-number">1.</span>
         <div className="info">
-          1. You will have only <span>15 seconds</span> per each question.
+          You will have only <span>15 seconds</span> per each question.
         </div>
+        <span className="info-number">2.</span>
         <div className="info">
-          2. Once you select your answer, it can't be undone.
+          Once you select your answer, it can't be undone.
         </div>
+        <span className="info-number">3.</span>
         <div className="info">
-          3. You can't select any option once time goes off.
+          You can't select any option once time goes off.
         </div>
+        <span className="info-number">4.</span>
         <div className="info">
-          4. You can't exit from the Quiz while you're playing.
+          You can't exit from the Quiz while you're playing.
         </div>
+        <span className="info-number">5.</span>
         <div className="info">
-          5. You'll get points on the basis of your correct answers.
+          You'll get points on the basis of your correct answers.
         </div>
       </div>
       <div className="buttons">
-        <button className="quit">Exit Quiz</button>
-        <button className="restart">Continue</button>
+        <Link to="/" className="quit btn">
+          Exit Quiz
+        </Link>
+        <Link to="/quiz_page" className="restart btn">
+          Continue
+        </Link>
       </div>
     </div>
   );
