@@ -1,14 +1,21 @@
 import "./result_style.css";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ComponentIndex from "../ComponentIndex";
+import Quiz_page from "../quiz_page/Quiz_page";
 
-const Result_page = ({ correctAnswerMarker, totalQuestions }) => {
+const Result_page = ({
+  correctAnswerMarker,
+  totalQuestions,
+  navigateStart,
+  navigateQuit,
+}) => {
   var score = correctAnswerMarker,
     totalQue = totalQuestions;
   var pass = "and congrats! 🎉 You got " + score + " out of " + totalQue;
   var average = "and nice 😎 You got " + score + " out of " + totalQue;
   var fail = "and sorry 😐 You got only " + score + " out of " + totalQue;
+
   return (
     <div className="result_box">
       <div className="icon">
@@ -19,12 +26,12 @@ const Result_page = ({ correctAnswerMarker, totalQuestions }) => {
         <span>{score > 3 ? pass : score == 3 ? average : fail}</span>
       </div>
       <div className="buttons">
-        <Link to="/quiz_page" className="restart btn">
+        <button onClick={navigateStart} className="restart btn">
           Replay Quiz
-        </Link>
-        <Link to="/start_page" className="quit btn">
+        </button>
+        <button onClick={navigateQuit} className="quit btn">
           Quit Quiz
-        </Link>
+        </button>
       </div>
     </div>
   );

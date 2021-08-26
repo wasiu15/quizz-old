@@ -18,6 +18,16 @@
   background: #fff;
   cursor: pointer;
 }
+.full {
+  height: 100vh;
+}
+.designedBy {
+  color: azure;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 @media (max-width: 500px) {
   .start_link {
@@ -27,7 +37,8 @@
 }
 @media (max-width: 400px) {
   .start_link {
-    font-size: 14px;
+    font-size: 18px;
+    font-family: "Arvo", "Poppins", sans-serif !important;
     padding: 8px 16px;
   }
 }

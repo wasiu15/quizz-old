@@ -29,6 +29,7 @@ body {
 
 .quiz_box header .title {
   font-size: 20px;
+  font-family: "Arvo", "Poppins", sans-serif !important;
   font-weight: 600;
 }
 
@@ -68,7 +69,6 @@ body {
 .quiz_box header .time_line {
   position: absolute;
   bottom: 0px;
-  width: 30px;
   left: 0px;
   height: 3px;
   background: #007bff;
@@ -99,6 +99,13 @@ footer .btn {
 .incorrect div.cross {
   display: block;
 }
+.option {
+  font-family: "Arvo", "Poppins", sans-serif !important;
+}
+.total_que span,
+.total_que span p {
+  font-family: "Arvo", "Poppins", sans-serif !important;
+}
 
 @media (max-width: 700px) {
   .quiz_box {
@@ -128,8 +135,5 @@ footer .btn {
   }
   .quiz_box header .timer {
     width: 130px;
-  }
-  .quiz_box {
-    top: 35%;
   }
 }

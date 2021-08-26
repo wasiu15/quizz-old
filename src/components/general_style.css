@@ -143,3 +143,11 @@ footer .button {
   color: rgba(255, 49, 49, 0.801);
   border-color: rgba(255, 49, 49, 0.801) !important;
 }
+
+@media (max-width: 400px) {
+  section,
+  header,
+  footer {
+    padding: 25px 20px 20px 20px !important;
+  }
+}

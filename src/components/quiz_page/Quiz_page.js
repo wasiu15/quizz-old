@@ -7,11 +7,12 @@ var disableAll = false,
   correctAnswerMarker = 0,
   avoidDuplicates = 0,
   counterLine,
-  doOnce = "doOnce";
+  doOnce = "doOnce",
+  nextBtnIsClicked = 0;
 const Quiz_page = ({ questions }) => {
   const [question, setQuestion] = useState(questions[0].question);
   const [options, setOptions] = useState(...questions[0].options);
-  const [questionCounter, setquestionCounter] = useState(0);
+  const [questionCounter, setQuestionCounter] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState(false);
   const [nextBtnVisible, setNextBtnVisible] = useState(false);
@@ -156,8 +157,17 @@ const Quiz_page = ({ questions }) => {
     <Result_page
       correctAnswerMarker={correctAnswerMarker}
       totalQuestions={questions.length}
+      navigateStart={navigateStart}
+      navigateQuit={navigateQuit}
     />
   );
+
+  function navigateStart() {
+    window.location = "http://localhost:3000/quiz_page";
+  }
+  function navigateQuit() {
+    window.location = "http://localhost:3000";
+  }
   function callLooper() {
     var borrowWidth = startTimerLine();
     startTimerSec(borrowWidth);
@@ -224,19 +234,18 @@ const Quiz_page = ({ questions }) => {
   }
   function checkIsInCorrect(eachOption) {
     if (eachOption == selectedAnswer) {
-      console.log("");
       return selectedAnswer != correctAnswer;
     }
     return false;
   }
   function optionsHandler(_selectedAnswer) {
-    console.log(_selectedAnswer);
+    console.log("");
     disableAll = true;
     setSelectedAnswer(_selectedAnswer);
     clearInterval(window.timerInterval);
     clearInterval(counterLine); //clear counterLine
     if (questionCounter + 1 < questions.length) setNextBtnVisible(true);
-    if (questionCounter + 1 == questions.length) setFinishBtnVisible(true);
+    if (nextBtnIsClicked == 4) setFinishBtnVisible(true);
   }
 
   function getCurrentQuestionObj(currentQuestion) {
@@ -246,8 +255,9 @@ const Quiz_page = ({ questions }) => {
   }
   function nextBtnHandler() {
     disableAll = false;
+    nextBtnIsClicked++;
     if (questionCounter <= questions.length) {
-      setquestionCounter(questionCounter + 1);
+      setQuestionCounter(questionCounter + 1);
       setNextBtnVisible(false);
       setFinishBtnVisible(false);
       time_line.style.width = "0px";

@@ -9,6 +9,7 @@
   display: flex;
   padding: 25px 30px;
   width: 60%;
+  text-align: center;
   margin: 0 20%;
   align-items: center;
   flex-direction: column;
@@ -83,8 +84,10 @@
 
 @media (max-width: 403px) {
   .result_box .buttons .btn {
-    font-size: 10px;
     padding: 8px 8px;
     text-align: center;
+  }
+  .score_text span {
+    padding: 0 20px;
   }
 }

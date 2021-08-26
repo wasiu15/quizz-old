@@ -11,7 +11,7 @@ const Rules_page = () => {
       <div className="info-list">
         <span className="info-number">1.</span>
         <div className="info">
-          You will have only <span>15 seconds</span> per each question.
+          You will have only <span>15 seconds</span> for each question.
         </div>
         <span className="info-number">2.</span>
         <div className="info">
