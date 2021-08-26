@@ -19,7 +19,7 @@ const Result_page = ({ correctAnswerMarker, totalQuestions }) => {
         <span>{score > 3 ? pass : score == 3 ? average : fail}</span>
       </div>
       <div className="buttons">
-        <Link to="/start_page" className="restart btn">
+        <Link to="/quiz_page" className="restart btn">
           Replay Quiz
         </Link>
         <Link to="/start_page" className="quit btn">

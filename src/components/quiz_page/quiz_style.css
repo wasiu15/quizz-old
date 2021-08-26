@@ -1,6 +1,3 @@
-.quiz_box.activeQuiz {
-}
-
 body {
   overflow: hidden;
 }
@@ -71,6 +68,7 @@ body {
 .quiz_box header .time_line {
   position: absolute;
   bottom: 0px;
+  width: 30px;
   left: 0px;
   height: 3px;
   background: #007bff;

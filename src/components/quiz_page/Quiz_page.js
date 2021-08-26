@@ -5,20 +5,26 @@ import "./quiz_style.css";
 
 var disableAll = false,
   correctAnswerMarker = 0,
-  avoidDuplicates = 0;
-
+  avoidDuplicates = 0,
+  counterLine,
+  doOnce = "doOnce";
 const Quiz_page = ({ questions }) => {
-  //var correctAnswer = questions[0].answer;
   const [question, setQuestion] = useState(questions[0].question);
   const [options, setOptions] = useState(...questions[0].options);
   const [questionCounter, setquestionCounter] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState(false);
   const [nextBtnVisible, setNextBtnVisible] = useState(false);
+  const [finishBtnVisible, setFinishBtnVisible] = useState(false);
+  const time_line = document.querySelector(".time_line");
+  const quiz_box = document.querySelector(".quiz_box");
   const [isGameOver, setIsGameOver] = useState(false);
+  const [timerDisplay, setTimerDisplay] = useState(15);
+
   useEffect(() => {
     getCurrentQuestionObj(questions[questionCounter]);
   }, [questionCounter]);
+  callLooper();
 
   return !isGameOver ? (
     <div className="quiz_box">
@@ -26,7 +32,7 @@ const Quiz_page = ({ questions }) => {
         <div className="title">YOS QUIZ</div>
         <div className="timer">
           <div className="time_left_txt">Time Left</div>
-          <div className="timer_sec">15</div>
+          <div className="timer_sec">{timerDisplay}</div>
         </div>
         <div className="time_line"></div>
       </header>
@@ -127,15 +133,19 @@ const Quiz_page = ({ questions }) => {
           </span>
         </div>
         <button
-          className={nextBtnVisible ? "next_btn btn" : "hidden"}
+          className={
+            !nextBtnVisible
+              ? "hidden"
+              : questionCounter + 1 < questions.length
+              ? "next_btn btn"
+              : "hidden"
+          }
           onClick={nextBtnHandler}
         >
           Next Yos
         </button>
         <button
-          className={
-            questionCounter + 1 == questions.length ? "next_btn btn" : "hidden"
-          }
+          className={!finishBtnVisible ? "hidden" : "next_btn btn"}
           onClick={displayResult}
         >
           Finish
@@ -148,9 +158,52 @@ const Quiz_page = ({ questions }) => {
       totalQuestions={questions.length}
     />
   );
+  function callLooper() {
+    var borrowWidth = startTimerLine();
+    startTimerSec(borrowWidth);
+  }
+
+  function startTimerLine() {
+    if (time_line && doOnce == "doOnce") {
+      doOnce = "stop";
+      var time = 0;
+      time_line.style.width = "0px";
+      var width = quiz_box.clientWidth,
+        diff = Math.round(width / 15);
+      counterLine = setInterval(timer, 29);
+
+      function timer() {
+        time++; //upgrading time value with 1
+        time_line.style.width = time + "px"; //increasing width of time_line with px by time value
+        if (time == width) {
+          clearInterval(counterLine);
+        }
+      }
+      return width;
+    }
+  }
+
+  function startTimerSec(fullWidth) {
+    if (fullWidth) {
+      var getTime = (fullWidth * 29) / 15;
+      var t = 15;
+      clearInterval(window.timerInterval);
+      window.timerInterval = setInterval(function () {
+        if (t > 0) {
+          t--;
+          setTimerDisplay(t);
+        } else {
+          stopCounterTimesUp();
+        }
+      }, getTime);
+    }
+  }
 
   function displayResult() {
     setIsGameOver(true);
+  }
+  function stopCounterTimesUp() {
+    optionsHandler("Z");
   }
 
   function checkIsCorrect(eachOption) {
@@ -171,14 +224,19 @@ const Quiz_page = ({ questions }) => {
   }
   function checkIsInCorrect(eachOption) {
     if (eachOption == selectedAnswer) {
+      console.log("");
       return selectedAnswer != correctAnswer;
     }
     return false;
   }
   function optionsHandler(_selectedAnswer) {
+    console.log(_selectedAnswer);
     disableAll = true;
     setSelectedAnswer(_selectedAnswer);
+    clearInterval(window.timerInterval);
+    clearInterval(counterLine); //clear counterLine
     if (questionCounter + 1 < questions.length) setNextBtnVisible(true);
+    if (questionCounter + 1 == questions.length) setFinishBtnVisible(true);
   }
 
   function getCurrentQuestionObj(currentQuestion) {
@@ -187,12 +245,15 @@ const Quiz_page = ({ questions }) => {
     setCorrectAnswer(currentQuestion.answer);
   }
   function nextBtnHandler() {
-    if (questionCounter < questions.length) {
+    disableAll = false;
+    if (questionCounter <= questions.length) {
       setquestionCounter(questionCounter + 1);
-      disableAll = false;
       setNextBtnVisible(false);
-    } else {
-      //displayResult();
+      setFinishBtnVisible(false);
+      time_line.style.width = "0px";
+      setTimerDisplay(15);
+      doOnce = "doOnce";
+      callLooper();
     }
   }
 };
