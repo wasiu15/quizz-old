@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Result_page from "../result_page/Result_page";
 import "./quiz_style.css";
 
@@ -38,13 +37,13 @@ const Quiz_page = ({ questions }) => {
         <div className="time_line"></div>
       </header>
       <section>
-        <div class="que_text">
+        <div className="que_text">
           <span>{question}</span>
         </div>
         <div className="option_list">
-          <div class="option_list">
+          <div className="option_list">
             <div
-              class={
+              className={
                 !disableAll
                   ? "option"
                   : "option disabled" && checkIsCorrect("A")
@@ -56,15 +55,15 @@ const Quiz_page = ({ questions }) => {
               onClick={() => optionsHandler("A")}
             >
               <span>{options[0]}</span>
-              <div class="icon tick hidden">
-                <i class="fas fa-check"></i>
+              <div className="icon tick hidden">
+                <i className="fas fa-check"></i>
               </div>
-              <div class="icon cross hidden">
-                <i class="fas fa-times"></i>
+              <div className="icon cross hidden">
+                <i className="fas fa-times"></i>
               </div>
             </div>
             <div
-              class={
+              className={
                 !disableAll
                   ? "option"
                   : "option disabled" && checkIsCorrect("B")
@@ -76,15 +75,15 @@ const Quiz_page = ({ questions }) => {
               onClick={() => optionsHandler("B")}
             >
               <span>{options[1]}</span>
-              <div class="icon tick hidden">
-                <i class="fas fa-check"></i>
+              <div className="icon tick hidden">
+                <i className="fas fa-check"></i>
               </div>
-              <div class="icon cross hidden">
-                <i class="fas fa-times"></i>
+              <div className="icon cross hidden">
+                <i className="fas fa-times"></i>
               </div>
             </div>
             <div
-              class={
+              className={
                 !disableAll
                   ? "option"
                   : "option disabled" && checkIsCorrect("C")
@@ -96,15 +95,15 @@ const Quiz_page = ({ questions }) => {
               onClick={() => optionsHandler("C")}
             >
               <span>{options[2]}</span>
-              <div class="icon tick hidden">
-                <i class="fas fa-check"></i>
+              <div className="icon tick hidden">
+                <i className="fas fa-check"></i>
               </div>
-              <div class="icon cross hidden">
-                <i class="fas fa-times"></i>
+              <div className="icon cross hidden">
+                <i className="fas fa-times"></i>
               </div>
             </div>
             <div
-              class={
+              className={
                 !disableAll
                   ? "option"
                   : "option disabled" && checkIsCorrect("D")
@@ -116,11 +115,11 @@ const Quiz_page = ({ questions }) => {
               onClick={() => optionsHandler("D")}
             >
               <span>{options[3]}</span>
-              <div class="icon tick hidden">
-                <i class="fas fa-check"></i>
+              <div className="icon tick hidden">
+                <i className="fas fa-check"></i>
               </div>
-              <div class="icon cross hidden">
-                <i class="fas fa-times"></i>
+              <div className="icon cross hidden">
+                <i className="fas fa-times"></i>
               </div>
             </div>
           </div>
@@ -174,18 +173,17 @@ const Quiz_page = ({ questions }) => {
   }
 
   function startTimerLine() {
-    if (time_line && doOnce == "doOnce") {
+    if (time_line && doOnce === "doOnce") {
       doOnce = "stop";
       var time = 0;
       time_line.style.width = "0px";
-      var width = quiz_box.clientWidth,
-        diff = Math.round(width / 15);
+      var width = quiz_box.clientWidth;
       counterLine = setInterval(timer, 29);
 
       function timer() {
         time++; //upgrading time value with 1
         time_line.style.width = time + "px"; //increasing width of time_line with px by time value
-        if (time == width) {
+        if (time === width) {
           clearInterval(counterLine);
         }
       }
@@ -218,23 +216,23 @@ const Quiz_page = ({ questions }) => {
 
   function checkIsCorrect(eachOption) {
     //  THIS COMPLEX LOGIC HERE IS TO AVOID THE DUPLICATES BECAUSE OF THE STATE REPEATING THE COUNT
-    if (eachOption == selectedAnswer) {
-      if (selectedAnswer == correctAnswer) {
-        if (avoidDuplicates == 0) {
+    if (eachOption === selectedAnswer) {
+      if (selectedAnswer === correctAnswer) {
+        if (avoidDuplicates === 0) {
           correctAnswerMarker++;
           avoidDuplicates++;
         }
         avoidDuplicates++;
-        if (avoidDuplicates == 3) {
+        if (avoidDuplicates === 3) {
           avoidDuplicates = 0;
         }
       }
     }
-    return eachOption == correctAnswer;
+    return eachOption === correctAnswer;
   }
   function checkIsInCorrect(eachOption) {
-    if (eachOption == selectedAnswer) {
-      return selectedAnswer != correctAnswer;
+    if (eachOption === selectedAnswer) {
+      return selectedAnswer !== correctAnswer;
     }
     return false;
   }
@@ -245,7 +243,7 @@ const Quiz_page = ({ questions }) => {
     clearInterval(window.timerInterval);
     clearInterval(counterLine); //clear counterLine
     if (questionCounter + 1 < questions.length) setNextBtnVisible(true);
-    if (nextBtnIsClicked == questions.length - 1) setFinishBtnVisible(true);
+    if (nextBtnIsClicked === questions.length - 1) setFinishBtnVisible(true);
   }
 
   function getCurrentQuestionObj(currentQuestion) {

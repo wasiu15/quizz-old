@@ -1,8 +1,5 @@
 import "./result_style.css";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import ComponentIndex from "../ComponentIndex";
-import Quiz_page from "../quiz_page/Quiz_page";
+import React from "react";
 
 const Result_page = ({
   correctAnswerMarker,
@@ -22,8 +19,8 @@ const Result_page = ({
         <i className="fas fa-crown"></i>
       </div>
       <div className="complete_text">You've completed the Quiz!</div>
-      <div class="score_text">
-        <span>{score > 3 ? pass : score == 3 ? average : fail}</span>
+      <div className="score_text">
+        <span>{score > 3 ? pass : score === 3 ? average : fail}</span>
       </div>
       <div className="buttons">
         <button onClick={navigateStart} className="restart btn">
