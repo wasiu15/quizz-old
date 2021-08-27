@@ -245,7 +245,7 @@ const Quiz_page = ({ questions }) => {
     clearInterval(window.timerInterval);
     clearInterval(counterLine); //clear counterLine
     if (questionCounter + 1 < questions.length) setNextBtnVisible(true);
-    if (nextBtnIsClicked == 4) setFinishBtnVisible(true);
+    if (nextBtnIsClicked == questions.length - 1) setFinishBtnVisible(true);
   }
 
   function getCurrentQuestionObj(currentQuestion) {
