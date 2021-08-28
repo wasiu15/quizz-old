@@ -174,6 +174,69 @@ export const GET_QUESTIONS = {
       answer: "D",
       options: ["12", "9", "6", "8"],
     },
+    {
+      numb: 26,
+      question: "Who has Erdogan been using as leverage?",
+      answer: "D",
+      options: [
+        "The Syrian rebels that Turkey aides",
+        "The Kurd rebels",
+        "The Hayat al Tahrir Shams",
+        "The Syrian refugees moving through Turkey",
+      ],
+    },
+    {
+      numb: 27,
+      question: "Who is the head of Al Qaeda?",
+      answer: "A",
+      options: [
+        "Ayman Mohammed Rabi al-Zawahiri",
+        "Abu Bakr al-Baghdadi",
+        "Osama bin Laden",
+        "Daud Ibrahim",
+      ],
+    },
+    {
+      numb: 28,
+      question: "What is the majority religion of Turkey?",
+      answer: "B",
+      options: ["Christianity", "Sunni Islam", "Judaism", "Shi'a Islam"],
+    },
+    {
+      numb: 29,
+      question: "What are the previous names of Istanbul?",
+      answer: "C",
+      options: [
+        "Instanal-Rike city",
+        "Polis city  - Tranport",
+        "Byzantium - Constantinople",
+        "Continople",
+      ],
+    },
+    {
+      numb: 30,
+      question: "The story of Santa Claus originated in Turkey?",
+      answer: "B",
+      options: ["False", "True", "All of the above", "None"],
+    },
+    {
+      numb: 31,
+      question: "What is the national sport of Turkey?",
+      answer: "A",
+      options: ["Oil wrestling", "Football", "Table tennis", "Basket ball"],
+    },
+    {
+      numb: 32,
+      question: "Turkey is the largest producer of hazelnuts?",
+      answer: "A",
+      options: ["Yes", "No", "All of the above", "None"],
+    },
+    {
+      numb: 33,
+      question: "_____ airport is the major aviation hub?",
+      answer: "C",
+      options: ["Karaman", "Everest", "Istanbul", "Tokat"],
+    },
   ],
 };
 
