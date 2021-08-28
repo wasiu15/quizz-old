@@ -1,5 +1,5 @@
 export const HOME_URL = {
-  url: "https://relaxed-torvalds-dda56d.netlify.app/quiz_page",
+  url: "http://yos-quiz.epizy.com/",
 };
 
 export const GET_QUESTIONS = {
