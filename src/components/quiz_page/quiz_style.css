@@ -109,6 +109,28 @@ footer .btn {
   font-family: "Arvo", "Poppins", sans-serif !important;
 }
 
+.compressor section {
+  padding: 10px 20px !important;
+}
+.compressor .que_text {
+  font-size: 15px !important;
+}
+.compressor .option_list {
+  padding: 5px 0 !important;
+}
+.compressor .option {
+  margin-bottom: 5px !important;
+}
+.compressor .btn {
+  padding: 15px 10px !important;
+}
+
+@media (max-width: 320px) {
+  .btn {
+    padding: 15px 10px !important;
+  }
+}
+
 @media (max-width: 700px) {
   .quiz_box {
     margin: 0 10%;
@@ -138,10 +160,7 @@ footer .btn {
     margin-right: 20px;
   }
 
-  .quiz_box header .title {
-    margin-right: 20px;
-  }
   .que_text {
-    font-size: 22px !important;
+    font-size: 20px !important;
   }
 }

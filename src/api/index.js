@@ -1,3 +1,7 @@
+export const HOME_URL = {
+  url: "https://relaxed-torvalds-dda56d.netlify.app/quiz_page",
+};
+
 export const GET_QUESTIONS = {
   questions: [
     {
@@ -144,7 +148,7 @@ export const GET_QUESTIONS = {
       numb: 22,
       question: "Turkey is an invaluable bridge between Europe and ____ ?",
       answer: "D",
-      options: ["Europe", "Africa", "Antarctica", "North America"],
+      options: ["Europe", "Africa", "Antarctica", "Asia"],
     },
     {
       numb: 23,

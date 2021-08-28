@@ -20,7 +20,7 @@ const Result_page = ({
       </div>
       <div className="complete_text">You've completed the Quiz!</div>
       <div className="score_text">
-        <span>{score > 3 ? pass : score === 3 ? average : fail}</span>
+        <span>{score > 7 ? pass : score > 5 ? average : fail}</span>
       </div>
       <div className="buttons">
         <button onClick={navigateStart} className="restart btn">

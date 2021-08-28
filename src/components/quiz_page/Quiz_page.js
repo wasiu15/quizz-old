@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Result_page from "../result_page/Result_page";
 import "./quiz_style.css";
+import { HOME_URL } from "../../api";
 
 var disableAll = false,
   correctAnswerMarker = 0,
@@ -8,6 +9,7 @@ var disableAll = false,
   counterLine,
   doOnce = "doOnce",
   nextBtnIsClicked = 0;
+
 const Quiz_page = ({ questions }) => {
   const [question, setQuestion] = useState(questions[0].question);
   const [options, setOptions] = useState(...questions[0].options);
@@ -20,14 +22,17 @@ const Quiz_page = ({ questions }) => {
   const quiz_box = document.querySelector(".quiz_box");
   const [isGameOver, setIsGameOver] = useState(false);
   const [timerDisplay, setTimerDisplay] = useState(15);
-
+  const [box_height, setBox_height] = useState(0);
   useEffect(() => {
     getCurrentQuestionObj(questions[questionCounter]);
+    setBox_height(document.querySelector(".quiz_box").clientHeight);
   }, [questionCounter]);
   callLooper();
-
+  if (box_height !== 0 && document.querySelector(".quiz_box")) {
+    setBox_height(document.querySelector(".quiz_box").clientHeight);
+  }
   return !isGameOver ? (
-    <div className="quiz_box">
+    <div className={box_height < 600 ? "quiz_box" : "quiz_box compressor"}>
       <header>
         <div className="title">YOS QUIZ</div>
         <div className="timer">
@@ -162,10 +167,10 @@ const Quiz_page = ({ questions }) => {
   );
 
   function navigateStart() {
-    window.location = "http://localhost:3000/quiz_page";
+    window.location = HOME_URL.url + "/quiz_page";
   }
   function navigateQuit() {
-    window.location = "http://localhost:3000";
+    window.location = HOME_URL;
   }
   function callLooper() {
     var borrowWidth = startTimerLine();

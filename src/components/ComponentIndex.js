@@ -15,7 +15,7 @@ const ComponentIndex = () => {
   let _questions = questionsList.sort(() => (Math.random() > 0.5 ? 1 : -1)); // get random
   let counter = 0;
   _questions.forEach((question) => {
-    if (counter < 20) {
+    if (counter < 10) {
       questions.push(question);
     }
     counter++;
