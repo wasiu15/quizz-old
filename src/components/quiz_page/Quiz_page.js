@@ -28,8 +28,10 @@ const Quiz_page = ({ questions }) => {
     setBox_height(document.querySelector(".quiz_box").clientHeight);
   }, [questionCounter]);
   callLooper();
-  if (box_height !== 0 && document.querySelector(".quiz_box")) {
-    setBox_height(document.querySelector(".quiz_box").clientHeight);
+  if (document.querySelector(".quiz_box")) {
+    if (box_height === 0) {
+      setBox_height(document.querySelector(".quiz_box").clientHeight);
+    }
   }
   return !isGameOver ? (
     <div className={box_height < 600 ? "quiz_box" : "quiz_box compressor"}>
