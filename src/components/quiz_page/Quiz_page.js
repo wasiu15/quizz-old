@@ -169,10 +169,10 @@ const Quiz_page = ({ questions }) => {
   );
 
   function navigateStart() {
-    window.location = HOME_URL.url + "/quiz_page";
+    window.location = HOME_URL.urlGame;
   }
   function navigateQuit() {
-    window.location = HOME_URL;
+    window.location = HOME_URL.url;
   }
   function callLooper() {
     var borrowWidth = startTimerLine();

@@ -1,5 +1,6 @@
 export const HOME_URL = {
   url: "http://yos-quiz.epizy.com/",
+  urlGame: "http://localhost:3000/quiz_page",
 };
 
 export const GET_QUESTIONS = {
