@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./rules_style.css";
 
-const Rules_page = () => {
+const Rules_page = ({ game_type }) => {
   return (
     <div className="info_box">
       <div className="info-title">
@@ -34,7 +34,10 @@ const Rules_page = () => {
         <Link to="/" className="quit btn">
           Exit Quiz
         </Link>
-        <Link to="/quiz_page" className="restart btn">
+        <Link
+          to={game_type == "Single" ? "/quiz_page" : "/m_quiz"}
+          className="restart btn"
+        >
           Continue
         </Link>
       </div>

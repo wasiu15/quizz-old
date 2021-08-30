@@ -1,6 +1,8 @@
+import axios from "axios";
+
 export const HOME_URL = {
-  url: "http://yos-quiz.epizy.com/",
-  urlGame: "http://localhost:3000/quiz_page",
+  url: "https://yos-quiz.000webhostapp.com",
+  urlGame: "https://yos-quiz.000webhostapp.com",
 };
 
 export const GET_QUESTIONS = {
@@ -241,22 +243,20 @@ export const GET_QUESTIONS = {
   ],
 };
 
-//import axios from "axios";
+const BASE_URL = "https://localhost:44365/api/";
 
-// const BASE_URL = "https://localhost:44365/api/";
+export const ENDPOINTS = {
+  QUESTION: "Question",
+  NOTHINGE_FORNOW: "NOTHING_FORNOW",
+};
 
-// export const ENDPOINTS = {
-//   QUESTION: "Question",
-//   NOTHINGE_FORNOW: "NOTHINGE_FORNOW",
-// };
-
-// export const createAPIEndpoint = (endpoint) => {
-//   let url = BASE_URL + endpoint + "/";
-//   return {
-//     fetchAll: () => axios.get(url),
-//     fetchById: (id) => axios.get(url + id),
-//     create: (newRecord) => axios.post(url, newRecord),
-//     update: (id, updatedRecord) => axios.put(url + id, updatedRecord),
-//     delete: (id) => axios.delete(url + id),
-//   };
-// };
+export const createAPIEndpoint = (endpoint) => {
+  let url = BASE_URL + endpoint + "/";
+  return {
+    fetchAll: () => axios.get(url),
+    fetchById: (id) => axios.get(url + id),
+    create: (newRecord) => axios.post(url, newRecord),
+    update: (id, updatedRecord) => axios.put(url + id, updatedRecord),
+    delete: (id) => axios.delete(url + id),
+  };
+};

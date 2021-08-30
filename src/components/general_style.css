@@ -143,6 +143,12 @@ footer .button {
   color: rgba(255, 49, 49, 0.801);
   border-color: rgba(255, 49, 49, 0.801) !important;
 }
+.game_type .start_btn {
+  padding: 10px;
+}
+.game_type .start_link {
+  display: block;
+}
 
 @media (max-width: 400px) {
   section,

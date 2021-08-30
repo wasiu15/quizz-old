@@ -7,14 +7,16 @@ import Quiz_page from "./quiz_page/Quiz_page";
 import Result_page from "./result_page/Result_page";
 
 import { createAPIEndpoint, ENDPOINTS, GET_QUESTIONS } from "../api";
+import Game_type from "./game_type/Game_type";
+import Multi_index from "./m_quiz/";
 
 let questionsList = GET_QUESTIONS.questions;
 
 const ComponentIndex = () => {
   var questions = [];
-  let _questions = questionsList.sort(() => (Math.random() > 0.5 ? 1 : -1)); // get random
+  var questionsTotal = questionsList.sort(() => (Math.random() > 0.5 ? 1 : -1)); // get random
   let counter = 0;
-  _questions.forEach((question) => {
+  questionsTotal.forEach((question) => {
     if (counter < 10) {
       questions.push(question);
     }
@@ -24,13 +26,16 @@ const ComponentIndex = () => {
     <Router>
       <Switch>
         <Route exact path="/">
-          <Start_page />
+          <Game_type />
         </Route>
         <Route path="/rules_page">
           <Rules_page />
         </Route>
         <Route path="/quiz_page">
           <Quiz_page questions={questions} />
+        </Route>
+        <Route path="/m_quiz">
+          <Multi_index allQuestions={questionsTotal} />
         </Route>
         <Route path="/result_page">
           <Result_page />
