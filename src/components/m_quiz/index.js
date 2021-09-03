@@ -16,13 +16,18 @@ const Multi_index = ({ allQuestions }) => {
   const [getName, setGetName] = useState(true);
   const [homeName, setHomeName] = useState("");
   const [awayName, setAwayName] = useState("");
+  const [isNotfication, setIsNotfication] = useState(false);
+  const [isFade, setIsFade] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState(false);
+  const [isGenNotification, setIsGenNotification] = useState(false);
   var isWaiting = false;
   var connectionStatus = "";
   const [bookingCode, setBookingCode] = useState("");
-  //const [bookCodes, setBookCodes] = useState([])
 
   ///////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////
+
   var isCallFromButtonCreate = false,
     isCallFromBottunJoin = false;
   const socket = io("http://localhost:7000");
@@ -31,11 +36,9 @@ const Multi_index = ({ allQuestions }) => {
       stage,
       isGetBooking,
     });
-    //isGetBooking = false;
   }
   function sendMessage() {
     //Send message on socket
-    console.log(player);
     if (isCallFromButtonCreate && connectionStatus == "waiting for pair") {
       socket.emit("message", {
         stage,
@@ -61,7 +64,6 @@ const Multi_index = ({ allQuestions }) => {
 
   useEffect(() => {
     socket.on("message", (payload) => {
-      console.log("recieved data from server");
       if (isGetBooking) {
         setBookingCode(payload);
         bookingCodeFromServer = payload;
@@ -72,17 +74,12 @@ const Multi_index = ({ allQuestions }) => {
             payload.connectionStatus == "paired" &&
             payload.bookingCode == bookingCode
           ) {
-            console.log("I'm here :)");
             setHomeName(payload.homeName);
             setAwayName(payload.awayName);
             if (isWaiting) {
-              // setHomeName(payload.homeName);
-              // setAwayName(payload.awayName);
               setIsGameTime(true);
               setPlayer("home");
             } else {
-              // setHomeName(payload.homeName);
-              // setAwayName(payload.awayName);
               concatQuestionNumber = payload.concatQuestionNumber;
               sendQuestionsForJoin(concatQuestionNumber);
             }
@@ -100,6 +97,9 @@ const Multi_index = ({ allQuestions }) => {
     <div className="multi_container">
       {getName ? (
         <div className="full">
+          <div className={isFade ? "notification fade-out" : "hidden"}>
+            Please, enter your nickname
+          </div>
           <div className="join-grp-container">
             <div className="join-grp-div">
               <h2>Welcome</h2>
@@ -117,6 +117,7 @@ const Multi_index = ({ allQuestions }) => {
               Skip
             </button>
           </div>
+          <p className="designedBy">Designed by: Alfred</p>
         </div>
       ) : isGameTime ? (
         <M_quiz
@@ -129,6 +130,22 @@ const Multi_index = ({ allQuestions }) => {
         />
       ) : (
         <div className="full">
+          <div className={isNotfication ? "notification fade-out" : "hidden"}>
+            {isGenNotification
+              ? notificationMessage
+              : isLoading
+              ? "waiting for your partner to connect"
+              : isCreate
+              ? "Send the code bolow to your partner"
+              : "Paste the code from partner below"}
+          </div>
+          {isLoading ? (
+            <div className="loader-container">
+              <div className="loader"></div>
+            </div>
+          ) : (
+            ""
+          )}
           {isCreate ? (
             <div className="join-grp-container">
               <div className="join-grp-div">
@@ -162,10 +179,8 @@ const Multi_index = ({ allQuestions }) => {
               </button>
             </div>
           )}
-          <p className="designedBy">Designed by: Alfred</p>
         </div>
       )}
-      <p className="designedBy">Designed by: Alfred</p>
     </div>
   );
   function getNameHandler() {
@@ -173,18 +188,31 @@ const Multi_index = ({ allQuestions }) => {
       getBookingCode();
       setGetName(false);
       setIsGameTime(false);
+      setIsNotfication(true);
     } else {
-      alert("Please, enter a nickname");
+      setIsFade(true);
     }
+    resetFader();
   }
   function skipHandler() {
     getBookingCode();
     setIsGameTime(false);
     setGetName(false);
+    setIsNotfication(true);
+    resetFader();
   }
   function changePage() {
     isCreate ? setBookingCode("") : setBookingCode(bookingCodeFromServer);
     setIsCreate(!isCreate);
+    setIsNotfication(true);
+    resetFader();
+  }
+  function resetFader() {
+    setTimeout(() => {
+      setIsNotfication(false);
+      setIsFade(false);
+      setIsLoading(false);
+    }, 9000);
   }
   function createHandler() {
     connectionStatus = "waiting for pair";
@@ -198,21 +226,34 @@ const Multi_index = ({ allQuestions }) => {
       }
       counter++;
     });
-    console.log(questionTen);
-    //setIsGameTime(true);
     isCallFromButtonCreate = true;
     sendMessage();
+    setIsLoading(true);
+    setIsNotfication(true);
+    setNotificationMessage(
+      "Send the booking code to your partner to Join Game"
+    );
+    setIsGenNotification(true);
+    notificationLooper();
   }
+
+  function notificationLooper() {
+    setTimeout(() => {
+      setIsGenNotification(true);
+    }, 9000);
+    setTimeout(() => {
+      setIsGenNotification(false);
+    }, 1000);
+  }
+
   function joinHandler() {
     connectionStatus = "want to pair";
     isCallFromBottunJoin = true;
     sendMessage();
-
-    //setIsCreate(true);
+    setIsNotfication(true);
   }
 
   function sendQuestionsForJoin(_concatQuestionNumber) {
-    console.log("Send Question For Join involked");
     var tempArray = _concatQuestionNumber.split(" , ");
     tempArray.forEach((selectedNumber) => {
       allQuestions.forEach((elementAll) => {
@@ -221,17 +262,12 @@ const Multi_index = ({ allQuestions }) => {
         }
       });
     });
-    console.log(questionTen);
     isCallFromBottunJoin = false;
-    console.log("set join to true", questionTen);
     setIsGameTime(true);
-    //if (player == "") {
     setPlayer("away");
-    //}
   }
 
-  function unableToConnect(sendOutBookingObj) {
-    console.log(sendOutBookingObj);
+  function unableToConnect() {
     isCallFromBottunJoin = false;
   }
 };

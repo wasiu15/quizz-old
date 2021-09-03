@@ -1,5 +1,6 @@
 .single_container {
   height: 100vh;
+  display: flex;
 }
 .quiz_box {
   margin: auto;
@@ -18,15 +19,11 @@
   row-gap: 0;
 }
 
-.single_quiz {
-  margin-top: 2%;
-}
-
 .quiz_box header {
   height: 70px;
   margin-bottom: 20px !important;
   position: relative;
-  padding: 8px 0 !important;
+  padding: 0 !important;
   background: #fff;
   border-radius: 5px 5px 0 0;
   display: flex;
@@ -117,10 +114,4 @@ footer .btn {
 .total_que span,
 .total_que span p {
   font-family: "Arvo", "Poppins", sans-serif !important;
-}
-
-@media (max-width: 650px) {
-  .quiz_box {
-    width: 80% !important;
-  }
 }

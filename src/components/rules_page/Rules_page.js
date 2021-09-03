@@ -23,11 +23,15 @@ const Rules_page = ({ game_type }) => {
         </div>
         <span className="info-number">4.</span>
         <div className="info">
-          You can't exit from the Quiz while you're playing.
+          {game_type == "Single"
+            ? "You can't exit from the Quiz while you're playing."
+            : "Click on 'Create Game' to host a game then send the code to your partner"}
         </div>
         <span className="info-number">5.</span>
         <div className="info">
-          You'll get points on the basis of your correct answers.
+          {game_type == "Single"
+            ? "You'll get points on the basis of your correct answers."
+            : "Click on 'Join Game' to join a game then enter the code from partner"}
         </div>
       </div>
       <div className="buttons">

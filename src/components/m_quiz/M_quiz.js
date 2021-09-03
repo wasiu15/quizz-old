@@ -9,19 +9,19 @@ var disableAll = false,
   avoidDuplicates = 0,
   counterLine,
   doOnce = "doOnce",
-  nextBtnIsClicked = 0;
-var isMarked = false;
-var doPlayerOnce = true;
-var stage = "2";
-var whoseTurn = "home";
-var doWhoseTurnOnce = true;
-var homeScore = 0;
-var awayScore = 0;
-var isCorrect = false;
-var tempPayload = {};
-var listHomeScore = [],
-  listAwayScore = [];
-var sendGameIsOver = false;
+  nextBtnIsClicked = 0,
+  isMarked = false,
+  doPlayerOnce = true,
+  stage = "2",
+  whoseTurn = "home",
+  doWhoseTurnOnce = true,
+  homeScore = 0,
+  awayScore = 0,
+  isCorrect = false,
+  tempPayload = {},
+  listHomeScore = [],
+  listAwayScore = [],
+  sendGameIsOver = false;
 const M_quiz = ({
   questions,
   player,
@@ -45,7 +45,6 @@ const M_quiz = ({
   const [box_height, setBox_height] = useState(0);
   const [p2SelectedOption, setp2SelectedOption] = useState("");
   const [disableForP2, setDisableForP2] = useState();
-  const [p2Name, setp2Name] = useState("");
   const [homeName_, setHomeName_] = useState(homeName);
   const [awayName_, setAwayName_] = useState(awayName);
   const player_ = player;
@@ -77,7 +76,6 @@ const M_quiz = ({
 
   useEffect(() => {
     socket.on("message", (payload) => {
-      console.log(payload.awayScore);
       if (bookingCode === payload.bookingCode) {
         tempPayload = {
           player: payload.player,
@@ -102,7 +100,6 @@ const M_quiz = ({
   function sendMessage() {
     if (player == whoseTurn) {
       if (finishBtnVisible) {
-        console.log("Got in here haha :)");
         if (correctAnswer == p2SelectedOption) {
           awayScore = awayScore + 1;
         }
@@ -128,7 +125,7 @@ const M_quiz = ({
       setHomeName_("Your");
     }
     if (awayName_ == "") {
-      setAwayName_("Opponet");
+      setAwayName_("Opponent");
     }
     return player == input && doWhoseTurnOnce;
   }
@@ -317,7 +314,7 @@ const M_quiz = ({
       counterLine = setInterval(timer, 29);
 
       function timer() {
-        time++; //upgrading time value with 1
+        time++;
         time_line.style.width = time + "px"; //increasing width of time_line with px by time value
         if (time === width) {
           clearInterval(counterLine);
@@ -382,7 +379,6 @@ const M_quiz = ({
     if (questionCounter + 1 < questions.length) setNextBtnVisible(true);
     if (nextBtnIsClicked === questions.length - 1) {
       setFinishBtnVisible(true);
-      console.log(homeScore, " = ", awayScore);
     }
   }
 
@@ -402,8 +398,6 @@ const M_quiz = ({
     if (player == whoseTurn) {
       sendMessage();
     }
-    console.log(awayScore);
-
     setNextQuestion();
   }
   function setNextQuestion() {
@@ -444,7 +438,6 @@ const M_quiz = ({
     return uniArry.length;
   }
   function markAnswerFromP2(p2SelectedOption) {
-    console.log("got here");
     if (!isGameOver) {
       homeScore = removeDuplicatesFromArray(listHomeScore);
       awayScore = removeDuplicatesFromArray(listAwayScore);

@@ -82,13 +82,13 @@
 }
 
 .whoseTurnDiv {
-  height: 5%;
+  height: 6%;
   min-width: 350px;
   max-width: 550px;
   width: 60%;
   align-items: center;
   margin: auto;
-  padding: 0 10px;
+  padding: 0 15px;
   display: flex;
   justify-content: space-between;
 }

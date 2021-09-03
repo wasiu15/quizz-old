@@ -30,6 +30,7 @@ section {
 section .que_text {
   font-size: 20px;
   font-weight: 600;
+  text-justify: inter-cluster;
 }
 
 section .option_list {
@@ -155,4 +156,107 @@ footer .button {
 }
 .game_type .start_link {
   display: block;
+}
+
+.notification {
+  padding: 10px;
+  width: 100%;
+  text-align: center;
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.541);
+  font-size: 15px;
+  opacity: 0;
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.hidden {
+  opacity: 0;
+}
+
+.fade-out {
+  animation: fadeOut ease 8s;
+  -webkit-animation: fadeOut ease 8s;
+  -moz-animation: fadeOut ease 8s;
+  -o-animation: fadeOut ease 8s;
+  -ms-animation: fadeOut ease 8s;
+}
+@keyframes fadeOut {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@-moz-keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-o-keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@-ms-keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.loader-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  background-color: purple;
+  display: flex;
+}
+.loader {
+  border-bottom: 5px solid rgb(88, 1, 88) !important;
+  border: 5px solid #f3f3f3; /* Light grey */
+  border-top: 5px solid rgb(88, 1, 88); /* Blue */
+  border-radius: 50%;
+  width: 50px;
+  margin: auto;
+  height: 50px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
