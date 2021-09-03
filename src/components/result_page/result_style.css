@@ -19,6 +19,11 @@
 
 .result_box .icon {
   font-size: 100px;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+.m_result .icon {
+  font-size: 100px;
   color: purple;
   margin-bottom: 10px;
 }

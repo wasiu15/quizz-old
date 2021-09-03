@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const HOME_URL = {
-  url: "https://yos-quiz.000webhostapp.com",
-  urlGame: "https://yos-quiz.000webhostapp.com",
+  url: "/",
+  urlGame: "/",
 };
 
 export const GET_QUESTIONS = {

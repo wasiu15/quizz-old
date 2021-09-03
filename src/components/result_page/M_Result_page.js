@@ -43,7 +43,7 @@ const M_Result_page = ({
     }
   }
   return (
-    <div className="result_box">
+    <div className="result_box m_result">
       <div className="icon">
         <i className="fas fa-crown"></i>
       </div>
