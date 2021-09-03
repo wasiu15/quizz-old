@@ -3,147 +3,236 @@ import io from "socket.io-client";
 import M_quiz from "./M_quiz";
 import "./style.css";
 
-const bookingCodes = ["LSF23", "COUA2", "SLDF2", "IWYW6"];
+var questionTen = [];
+var isGetBooking = true;
+var stage = "1";
+var bookingCodeFromServer = "";
 const Multi_index = ({ allQuestions }) => {
-  //  const [questionNumbers, setQuestionNumbers] = useState("");
-  const [questionTen, setquestionTen] = useState([]);
-  //const questionTen = [];
-  var booking_code = "";
-  const [concatQuestionNumber, setConcatQuestionNumber] = useState("");
-  const [isGameTime, setIsGameTime] = useState(false);
+  var concatQuestionNumber = "";
+  const [isGameTime, setIsGameTime] = useState(true);
   const [isCreate, setIsCreate] = useState(true);
   const [player, setPlayer] = useState("");
-  const [bookingCode, setBookingCode] = useState("LSDF24");
-  var tempBooking = bookingCodes[parseInt(Math.random() * 4)];
-
-  const [connectionStatus, setConnectionStatus] = useState("")
-  const [bookingCodeFromserver, setBookingCodeFromserver] = useState("")
+  const [playerName, setPlayerName] = useState("");
+  const [getName, setGetName] = useState(true);
+  const [homeName, setHomeName] = useState("");
+  const [awayName, setAwayName] = useState("");
+  var isWaiting = false;
+  var connectionStatus = "";
+  const [bookingCode, setBookingCode] = useState("");
+  //const [bookCodes, setBookCodes] = useState([])
 
   ///////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////
-  
+  var isCallFromButtonCreate = false,
+    isCallFromBottunJoin = false;
   const socket = io("http://localhost:7000");
-  const [message, setMessage] = useState("");
+  function getBookingCode() {
+    socket.emit("message", {
+      stage,
+      isGetBooking,
+    });
+    //isGetBooking = false;
+  }
+  function sendMessage() {
+    //Send message on socket
+    console.log(player);
+    if (isCallFromButtonCreate && connectionStatus == "waiting for pair") {
+      socket.emit("message", {
+        stage,
+        bookingCode,
+        connectionStatus,
+        concatQuestionNumber,
+        player,
+        playerName,
+      });
+
+      isWaiting = true;
+      isCallFromButtonCreate = false;
+    }
+    if (isCallFromBottunJoin && connectionStatus == "want to pair") {
+      socket.emit("message", {
+        stage,
+        playerName,
+        bookingCode,
+        connectionStatus,
+      });
+    }
+  }
 
   useEffect(() => {
     socket.on("message", (payload) => {
-      if(payload.connectionStatus == "waiting for pair" && payload.bookingCode == bookingCode){      
-      setBookingCodeFromserver(payload.bookingCode)
-      concatQuestionNumber = payload.concatQuestionNumber;
+      console.log("recieved data from server");
+      if (isGetBooking) {
+        setBookingCode(payload);
+        bookingCodeFromServer = payload;
+        isGetBooking = false;
+      } else {
+        if (isCallFromBottunJoin || isWaiting) {
+          if (
+            payload.connectionStatus == "paired" &&
+            payload.bookingCode == bookingCode
+          ) {
+            console.log("I'm here :)");
+            setHomeName(payload.homeName);
+            setAwayName(payload.awayName);
+            if (isWaiting) {
+              // setHomeName(payload.homeName);
+              // setAwayName(payload.awayName);
+              setIsGameTime(true);
+              setPlayer("home");
+            } else {
+              // setHomeName(payload.homeName);
+              // setAwayName(payload.awayName);
+              concatQuestionNumber = payload.concatQuestionNumber;
+              sendQuestionsForJoin(concatQuestionNumber);
+            }
+          } else {
+            unableToConnect(payload);
+          }
+        }
       }
     });
   });
-
-  const sendMessage = () => {
-    console.log(message);
-    if(connectionStatus == "waiting for pair"){
-      socket.emit("message", { bookingCode, connectionStatus, concatQuestionNumber });
-      //Send message on socket
-    } else {
-      socket.emit("message", { bookingCode, connectionStatus });
-    }
-  };
-
 
   ///////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////////////////////////////////////
   return (
     <div className="multi_container">
-      {isGameTime ? (
+      {getName ? (
+        <div className="full">
+          <div className="join-grp-container">
+            <div className="join-grp-div">
+              <h2>Welcome</h2>
+              <input
+                onChange={(e) => setPlayerName(e.target.value)}
+                type="text"
+                maxLength="8"
+                placeholder="nickname..."
+              />
+              <button class="btn" onClick={getNameHandler}>
+                Continue
+              </button>
+            </div>
+            <button className="btnJoin" onClick={skipHandler}>
+              Skip
+            </button>
+          </div>
+        </div>
+      ) : isGameTime ? (
         <M_quiz
           questions={questionTen}
           player={player}
+          playerName={playerName}
+          homeName={homeName}
+          awayName={awayName}
           bookingCode={bookingCode}
         />
       ) : (
         <div className="full">
           {isCreate ? (
-            <div className="join-grp-div start_btn">
-              <button onClick={goto}>go to join</button>
-              <h2>Booking Code:</h2>
-              <input type="text" readOnly value={bookingCode} />
-              <button class="btn" onClick={createHandler}>
-                Create Now
+            <div className="join-grp-container">
+              <div className="join-grp-div">
+                <h2>Booking Code</h2>
+                <input type="text" value={bookingCode} readOnly />
+                <button class="btn" onClick={createHandler}>
+                  Create Game
+                </button>
+              </div>
+              <button className="btnJoin" onClick={changePage}>
+                Join Game
               </button>
             </div>
           ) : (
-            <div className="join-grp-div start_btn">
-              <h2>Booking Code:</h2>
-              <input
-                type="text"
-                id="join_booking_input"
-                onChange={(e) => {
-                  setBookingCode(e.target.value);
-                }}
-                placeholder="LSDF24"
-              />
-              <button class="btn" onClick={joinHandler}>
-                Join Now
+            <div className="join-grp-container">
+              <div className="join-grp-div">
+                <h2>Booking Code</h2>
+                <input
+                  value={bookingCode}
+                  onChange={(e) => {
+                    setBookingCode(e.target.value);
+                  }}
+                  placeholder="LSDF24"
+                />
+                <button class="btn" onClick={joinHandler}>
+                  Join Now
+                </button>
+              </div>
+              <button className="btnJoin" onClick={changePage}>
+                Create Game
               </button>
             </div>
           )}
           <p className="designedBy">Designed by: Alfred</p>
         </div>
       )}
+      <p className="designedBy">Designed by: Alfred</p>
     </div>
   );
-  function goto() {
-    setIsCreate(false);
+  function getNameHandler() {
+    if (playerName !== "") {
+      getBookingCode();
+      setGetName(false);
+      setIsGameTime(false);
+    } else {
+      alert("Please, enter a nickname");
+    }
+  }
+  function skipHandler() {
+    getBookingCode();
+    setIsGameTime(false);
+    setGetName(false);
+  }
+  function changePage() {
+    isCreate ? setBookingCode("") : setBookingCode(bookingCodeFromServer);
+    setIsCreate(!isCreate);
   }
   function createHandler() {
-    setConnectionStatus("waiting for pair")
-    //save booking and question numbs to database
-    // display waiting for player 2
-    // after 2mins display delay from player 2
+    connectionStatus = "waiting for pair";
     let counter = 0;
+    questionTen = [];
+    concatQuestionNumber = " , ";
     allQuestions.forEach((question) => {
-      if (counter < 10) {
-        setquestionTen((questionTen) => [...questionTen, question]);
-        setConcatQuestionNumber(concatQuestionNumber + " , " + question.numb);
+      if (counter < 2) {
+        questionTen.push(question);
+        concatQuestionNumber = concatQuestionNumber + " , " + question.numb;
       }
       counter++;
     });
-    //setQuestionNumbers(questionTen);
-    //send booking_code
-    setBookingCode(tempBooking);
-    setPlayer("home");
-    setIsGameTime(true);
-    //setIsCreate(false);
+    console.log(questionTen);
+    //setIsGameTime(true);
+    isCallFromButtonCreate = true;
+    sendMessage();
   }
   function joinHandler() {
-    setConnectionStatus("want to pair")
-    // get booking and question numbs from database
-    // join right away
-    // get booking_code
-    // send joined add it to booking_code
-    setquestionTen([]);
-    let counter = 0;
-    allQuestions.forEach((question) => {
-      if (counter < 10) {
-        setquestionTen((questionTen) => [...questionTen, question]);
-        setConcatQuestionNumber(concatQuestionNumber + " , " + question.numb);
-      }
-      counter++;
-    });
-    //var entered_booking = document.getElementById("join_booking_input").value;
+    connectionStatus = "want to pair";
+    isCallFromBottunJoin = true;
+    sendMessage();
 
-    if (bookingCode == bookingCodeFromserver) {    
-      var tempArray = concatQuestionNumber.split(" , ");
-
-      allQuestions.forEach((elementAll) => {
-        tempArray.forEach((selectedNumber) => {
-          if (elementAll.numb == selectedNumber) {
-            questionTen.push(elementAll);
-          }
-        });
-      });
-      //console.log(questionTen);
-    } else{
-      console.log("booking code error")
-    }
-    setPlayer("away");
-    setIsGameTime(true);
     //setIsCreate(true);
+  }
+
+  function sendQuestionsForJoin(_concatQuestionNumber) {
+    console.log("Send Question For Join involked");
+    var tempArray = _concatQuestionNumber.split(" , ");
+    tempArray.forEach((selectedNumber) => {
+      allQuestions.forEach((elementAll) => {
+        if (elementAll.numb == selectedNumber) {
+          questionTen.push(elementAll);
+        }
+      });
+    });
+    console.log(questionTen);
+    isCallFromBottunJoin = false;
+    console.log("set join to true", questionTen);
+    setIsGameTime(true);
+    //if (player == "") {
+    setPlayer("away");
+    //}
+  }
+
+  function unableToConnect(sendOutBookingObj) {
+    console.log(sendOutBookingObj);
+    isCallFromBottunJoin = false;
   }
 };
 

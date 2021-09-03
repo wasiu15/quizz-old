@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import "./style.css";
 import Rules_page from "../rules_page/Rules_page";
 
 const Game_type = () => {
@@ -12,14 +12,14 @@ const Game_type = () => {
         <div className="full">
           <div className="start_btn">
             <button
-              className="start_link"
+              className="start_link game_btn"
               onClick={() => onClickHandler("Single")}
             >
               Single Player
             </button>
             <br />
             <button
-              className="start_link"
+              className="start_link game_btn"
               onClick={() => onClickHandler("Multi")}
             >
               Multi PLayer

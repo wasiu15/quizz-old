@@ -74,20 +74,3 @@
   color: #007bff;
   background: #fff;
 }
-
-@media (max-width: 450px) {
-  .info_box .info-title {
-    font-size: 20px;
-  }
-  .info_box .info-list .info,
-  .info_box .info-list .info span {
-    font-size: 16px;
-  }
-  .info_box .info-list > span {
-    font-size: 18px;
-  }
-  .info_box .buttons .btn {
-    font-size: 15px;
-    padding: 8px 12px;
-  }
-}

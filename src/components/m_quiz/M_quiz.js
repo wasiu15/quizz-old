@@ -1,23 +1,38 @@
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
-import Result_page from "../result_page/Result_page";
-//import "./quiz_style.css";
 import { HOME_URL } from "../../api";
+import M_Result_page from "../result_page/M_Result_page";
 
 const socket = io("http://localhost:7000");
-const userName = "Booking code: SLJ23";
 
 var disableAll = false,
-  correctAnswerMarker = 0,
   avoidDuplicates = 0,
   counterLine,
   doOnce = "doOnce",
   nextBtnIsClicked = 0;
-
+var isMarked = false;
 var doPlayerOnce = true;
-const M_quiz = ({ questions, player, bookingCode }) => {
+var stage = "2";
+var whoseTurn = "home";
+var doWhoseTurnOnce = true;
+var homeScore = 0;
+var awayScore = 0;
+var isCorrect = false;
+var tempPayload = {};
+var listHomeScore = [],
+  listAwayScore = [];
+var sendGameIsOver = false;
+const M_quiz = ({
+  questions,
+  player,
+  homeName,
+  awayName,
+  playerName,
+  bookingCode,
+}) => {
   const [question, setQuestion] = useState(questions[0].question);
   const [options, setOptions] = useState(...questions[0].options);
+  const [numb, setNumb] = useState();
   const [questionCounter, setQuestionCounter] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState(false);
@@ -28,21 +43,23 @@ const M_quiz = ({ questions, player, bookingCode }) => {
   const [isGameOver, setIsGameOver] = useState(false);
   const [timerDisplay, setTimerDisplay] = useState(15);
   const [box_height, setBox_height] = useState(0);
-  const [whoseTurn, setWhoseTurn] = useState(false);
   const [p2SelectedOption, setp2SelectedOption] = useState("");
-  const [disableForP2, setDisableForP2] = useState(false);
-
-  const [asPlayer2Join, setAsPlayer2Join] = useState("");
+  const [disableForP2, setDisableForP2] = useState();
+  const [p2Name, setp2Name] = useState("");
+  const [homeName_, setHomeName_] = useState(homeName);
+  const [awayName_, setAwayName_] = useState(awayName);
+  const player_ = player;
   useEffect(() => {
-    if (disableForP2) {
-      optionsHandler("B");
-    }
-    return () => {
-      if (disableForP2) {
-        optionsHandler("B");
-        console.log("hey");
+    if (doPlayerOnce) {
+      if (player == "home") {
+        setDisableForP2(false);
+      } else if (player == "away") {
+        setDisableForP2(true);
       }
-    };
+    }
+    if (player !== whoseTurn) {
+      clearTimer();
+    }
   }, [question]);
   useEffect(() => {
     getCurrentQuestionObj(questions[questionCounter]);
@@ -58,36 +75,83 @@ const M_quiz = ({ questions, player, bookingCode }) => {
   //////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////
 
-  const [optionFromServer, setOptionFromServer] = useState("");
-
   useEffect(() => {
     socket.on("message", (payload) => {
-      //setChat([...chat, payload]);
+      console.log(payload.awayScore);
       if (bookingCode === payload.bookingCode) {
-        setOptionFromServer(payload);
-        markAnswerFromP2(payload.p2SelectedOption);
+        tempPayload = {
+          player: payload.player,
+          number: payload.numb,
+          isCorrect: payload.isCorrect,
+        };
+        if (payload.player == "home") {
+          listHomeScore.push(tempPayload);
+        } else if (payload.player == "away") {
+          listAwayScore.push(tempPayload);
+        }
+
+        if (player !== "") {
+          if (doPlayerOnce || (player !== payload.player && !isMarked)) {
+            markAnswerFromP2(payload.p2SelectedOption);
+          }
+        }
       }
     });
-    //console.log("options: ", optionFromServer);
   });
 
   function sendMessage() {
-    //console.log(p2SelectedOption);
-    socket.emit("message", { player, bookingCode, p2SelectedOption });
-    //Send message on socket
-    //setMessage("");
+    if (player == whoseTurn) {
+      if (finishBtnVisible) {
+        console.log("Got in here haha :)");
+        if (correctAnswer == p2SelectedOption) {
+          awayScore = awayScore + 1;
+        }
+      }
+      isCorrect = false;
+      socket.emit("message", {
+        stage,
+        player,
+        bookingCode,
+        numb,
+        p2SelectedOption,
+        correctAnswer,
+        isCorrect,
+        sendGameIsOver,
+      });
+    }
   }
 
   ////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////
+  function checkWhoseTurnOnce(input) {
+    if (homeName_ == "") {
+      setHomeName_("Your");
+    }
+    if (awayName_ == "") {
+      setAwayName_("Opponet");
+    }
+    return player == input && doWhoseTurnOnce;
+  }
 
   return !isGameOver ? (
     <div className="m_quiz_container">
       <div className="whoseTurnDiv">
-        <p className="home">{!whoseTurn ? "Your Turn" : ""}</p>
-        <p className="away">{whoseTurn ? "Alfred Turn" : ""}</p>
+        <p className="home">
+          {checkWhoseTurnOnce("home")
+            ? homeName_ + " Turn"
+            : whoseTurn == player_
+            ? homeName_ + " Turn"
+            : ""}
+        </p>
+        <p className="away">
+          {checkWhoseTurnOnce("away")
+            ? awayName_ + " Turn"
+            : whoseTurn !== player_
+            ? awayName_ + " Turn"
+            : ""}
+        </p>
       </div>
-      <div className={box_height < 600 ? "quiz_box" : "quiz_box compressor"}>
+      <div className="quiz_box">
         <header>
           <div className="title">YOS QUIZ</div>
           <div className="timer">
@@ -223,9 +287,11 @@ const M_quiz = ({ questions, player, bookingCode }) => {
       </div>
     </div>
   ) : (
-    <Result_page
-      correctAnswerMarker={correctAnswerMarker}
-      totalQuestions={questions.length}
+    <M_Result_page
+      homeScore={homeScore}
+      awayScore={awayScore}
+      player={player}
+      playerName={playerName}
       navigateStart={navigateStart}
       navigateQuit={navigateQuit}
     />
@@ -278,6 +344,7 @@ const M_quiz = ({ questions, player, bookingCode }) => {
   }
 
   function displayResult() {
+    sendMessage();
     setIsGameOver(true);
   }
   function stopCounterTimesUp() {
@@ -289,11 +356,10 @@ const M_quiz = ({ questions, player, bookingCode }) => {
     if (eachOption === selectedAnswer) {
       if (selectedAnswer === correctAnswer) {
         if (avoidDuplicates === 0) {
-          correctAnswerMarker++;
           avoidDuplicates++;
         }
         avoidDuplicates++;
-        if (avoidDuplicates === 3) {
+        if (avoidDuplicates === 2) {
           avoidDuplicates = 0;
         }
       }
@@ -307,26 +373,51 @@ const M_quiz = ({ questions, player, bookingCode }) => {
     return false;
   }
   function optionsHandler(_selectedAnswer) {
-    setp2SelectedOption(_selectedAnswer);
     console.log("");
     disableAll = true;
     setSelectedAnswer(_selectedAnswer);
-    clearInterval(window.timerInterval);
-    clearInterval(counterLine); //clear counterLine
+    setp2SelectedOption(_selectedAnswer);
+
+    clearTimer();
     if (questionCounter + 1 < questions.length) setNextBtnVisible(true);
-    if (nextBtnIsClicked === questions.length - 1) setFinishBtnVisible(true);
+    if (nextBtnIsClicked === questions.length - 1) {
+      setFinishBtnVisible(true);
+      console.log(homeScore, " = ", awayScore);
+    }
   }
 
   function getCurrentQuestionObj(currentQuestion) {
     setQuestion(1 + questionCounter + ". " + currentQuestion.question);
     setOptions(currentQuestion.options);
     setCorrectAnswer(currentQuestion.answer);
+    setNumb(currentQuestion.numb);
   }
 
   function nextBtnHandler() {
+    isMarked = false;
+    doPlayerOnce = false;
+    doWhoseTurnOnce = false;
     disableAll = false;
     nextBtnIsClicked++;
+    if (player == whoseTurn) {
+      sendMessage();
+    }
+    console.log(awayScore);
 
+    setNextQuestion();
+  }
+  function setNextQuestion() {
+    if (whoseTurn == "home") {
+      whoseTurn = "away";
+    } else {
+      whoseTurn = "home";
+    }
+    if (player == whoseTurn) {
+      setDisableForP2(false);
+      disableAll = false;
+    } else {
+      setDisableForP2(true);
+    }
     if (questionCounter <= questions.length) {
       setQuestionCounter(questionCounter + 1);
       setNextBtnVisible(false);
@@ -336,38 +427,35 @@ const M_quiz = ({ questions, player, bookingCode }) => {
       doOnce = "doOnce";
       callLooper();
     }
-
-    if (doPlayerOnce) {
-      if (player == "home") {
-        setWhoseTurn(true);
-      } else {
-        setWhoseTurn(false);
-      }
-      doPlayerOnce = false;
-    } else {
-      setWhoseTurn(!whoseTurn);
-    }
-    if (!whoseTurn) {
-      //console.log("got in");
-      setDisableForP2(true);
-      disableAll = false;
-      setDisableForP2(false);
-      clearInterval(window.timerInterval);
-      clearInterval(counterLine); //clear counterLine
-      // send the selected option to the database
-      //waitingForP2();
-      sendMessage();
-    } else {
-      setDisableForP2(false);
-    }
+  }
+  function clearTimer() {
+    clearInterval(window.timerInterval);
+    clearInterval(counterLine); //clear counterLine
   }
 
+  function removeDuplicatesFromArray(arrayOfDuplicates) {
+    let arrayOfQuestNumbers = [];
+    arrayOfDuplicates.forEach((element) => {
+      if (element.isCorrect == true) {
+        arrayOfQuestNumbers.push(element.number);
+      }
+    });
+    let uniArry = [...new Set(arrayOfQuestNumbers)];
+    return uniArry.length;
+  }
   function markAnswerFromP2(p2SelectedOption) {
-    //get P2 selected options from the database
-    if (true) {
-      // AFTER GETTING DATA FROM DB
-      optionsHandler(p2SelectedOption);
+    console.log("got here");
+    if (!isGameOver) {
+      homeScore = removeDuplicatesFromArray(listHomeScore);
+      awayScore = removeDuplicatesFromArray(listAwayScore);
     }
+
+    setSelectedAnswer(p2SelectedOption);
+    optionsHandler(p2SelectedOption);
+    setDisableForP2(false);
+    disableAll = true;
+
+    isMarked = true;
   }
 };
 

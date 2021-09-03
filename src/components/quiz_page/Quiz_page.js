@@ -34,130 +34,133 @@ const Quiz_page = ({ questions }) => {
     }
   }
   return !isGameOver ? (
-    <div className={box_height < 600 ? "quiz_box" : "quiz_box compressor"}>
-      <header>
-        <div className="title">YOS QUIZ</div>
-        <div className="timer">
-          <div className="time_left_txt">Time Left</div>
-          <div className="timer_sec">{timerDisplay}</div>
-        </div>
-        <div className="time_line"></div>
-      </header>
-      <section>
-        <div className="que_text">
-          <span>{question}</span>
-        </div>
-        <div className="option_list">
+    <div className="single_container">
+      <div className="quiz_box single_quiz">
+        <header>
+          <div className="title">YOS QUIZ</div>
+          <div className="timer">
+            <div className="time_left_txt">Time Left</div>
+            <div className="timer_sec">{timerDisplay}</div>
+          </div>
+          <div className="time_line"></div>
+        </header>
+        <section>
+          <div className="que_text">
+            <span>{question}</span>
+          </div>
           <div className="option_list">
-            <div
-              className={
-                !disableAll
-                  ? "option"
-                  : "option disabled" && checkIsCorrect("A")
-                  ? "option correct disabled"
-                  : "option disabled" && checkIsInCorrect("A")
-                  ? "option incorrect disabled"
-                  : "option disabled"
-              }
-              onClick={() => optionsHandler("A")}
-            >
-              <span>{options[0]}</span>
-              <div className="icon tick hidden">
-                <i className="fas fa-check"></i>
+            <div className="option_list">
+              <div
+                className={
+                  !disableAll
+                    ? "option"
+                    : "option disabled" && checkIsCorrect("A")
+                    ? "option correct disabled"
+                    : "option disabled" && checkIsInCorrect("A")
+                    ? "option incorrect disabled"
+                    : "option disabled"
+                }
+                onClick={() => optionsHandler("A")}
+              >
+                <span>{options[0]}</span>
+                <div className="icon tick hidden">
+                  <i className="fas fa-check"></i>
+                </div>
+                <div className="icon cross hidden">
+                  <i className="fas fa-times"></i>
+                </div>
               </div>
-              <div className="icon cross hidden">
-                <i className="fas fa-times"></i>
+              <div
+                className={
+                  !disableAll
+                    ? "option"
+                    : "option disabled" && checkIsCorrect("B")
+                    ? "option correct disabled"
+                    : "option disabled" && checkIsInCorrect("B")
+                    ? "option incorrect disabled"
+                    : "option disabled"
+                }
+                onClick={() => optionsHandler("B")}
+              >
+                <span>{options[1]}</span>
+                <div className="icon tick hidden">
+                  <i className="fas fa-check"></i>
+                </div>
+                <div className="icon cross hidden">
+                  <i className="fas fa-times"></i>
+                </div>
               </div>
-            </div>
-            <div
-              className={
-                !disableAll
-                  ? "option"
-                  : "option disabled" && checkIsCorrect("B")
-                  ? "option correct disabled"
-                  : "option disabled" && checkIsInCorrect("B")
-                  ? "option incorrect disabled"
-                  : "option disabled"
-              }
-              onClick={() => optionsHandler("B")}
-            >
-              <span>{options[1]}</span>
-              <div className="icon tick hidden">
-                <i className="fas fa-check"></i>
+              <div
+                className={
+                  !disableAll
+                    ? "option"
+                    : "option disabled" && checkIsCorrect("C")
+                    ? "option correct disabled"
+                    : "option disabled" && checkIsInCorrect("C")
+                    ? "option incorrect disabled"
+                    : "option disabled"
+                }
+                onClick={() => optionsHandler("C")}
+              >
+                <span>{options[2]}</span>
+                <div className="icon tick hidden">
+                  <i className="fas fa-check"></i>
+                </div>
+                <div className="icon cross hidden">
+                  <i className="fas fa-times"></i>
+                </div>
               </div>
-              <div className="icon cross hidden">
-                <i className="fas fa-times"></i>
-              </div>
-            </div>
-            <div
-              className={
-                !disableAll
-                  ? "option"
-                  : "option disabled" && checkIsCorrect("C")
-                  ? "option correct disabled"
-                  : "option disabled" && checkIsInCorrect("C")
-                  ? "option incorrect disabled"
-                  : "option disabled"
-              }
-              onClick={() => optionsHandler("C")}
-            >
-              <span>{options[2]}</span>
-              <div className="icon tick hidden">
-                <i className="fas fa-check"></i>
-              </div>
-              <div className="icon cross hidden">
-                <i className="fas fa-times"></i>
-              </div>
-            </div>
-            <div
-              className={
-                !disableAll
-                  ? "option"
-                  : "option disabled" && checkIsCorrect("D")
-                  ? "option correct disabled"
-                  : "option disabled" && checkIsInCorrect("D")
-                  ? "option incorrect disabled"
-                  : "option disabled"
-              }
-              onClick={() => optionsHandler("D")}
-            >
-              <span>{options[3]}</span>
-              <div className="icon tick hidden">
-                <i className="fas fa-check"></i>
-              </div>
-              <div className="icon cross hidden">
-                <i className="fas fa-times"></i>
+              <div
+                className={
+                  !disableAll
+                    ? "option"
+                    : "option disabled" && checkIsCorrect("D")
+                    ? "option correct disabled"
+                    : "option disabled" && checkIsInCorrect("D")
+                    ? "option incorrect disabled"
+                    : "option disabled"
+                }
+                onClick={() => optionsHandler("D")}
+              >
+                <span>{options[3]}</span>
+                <div className="icon tick hidden">
+                  <i className="fas fa-check"></i>
+                </div>
+                <div className="icon cross hidden">
+                  <i className="fas fa-times"></i>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <footer>
-        <div className="total_que">
-          <span>
-            <p>{questionCounter + 1}</p> of <p>{questions.length}</p> Questions
-          </span>
-        </div>
-        <button
-          className={
-            !nextBtnVisible
-              ? "hidden"
-              : questionCounter + 1 < questions.length
-              ? "next_btn btn"
-              : "hidden"
-          }
-          onClick={nextBtnHandler}
-        >
-          Next Yos
-        </button>
-        <button
-          className={!finishBtnVisible ? "hidden" : "next_btn btn"}
-          onClick={displayResult}
-        >
-          Finish
-        </button>
-      </footer>
+        <footer>
+          <div className="total_que">
+            <span>
+              <p>{questionCounter + 1}</p> of <p>{questions.length}</p>{" "}
+              Questions
+            </span>
+          </div>
+          <button
+            className={
+              !nextBtnVisible
+                ? "hidden"
+                : questionCounter + 1 < questions.length
+                ? "next_btn btn"
+                : "hidden"
+            }
+            onClick={nextBtnHandler}
+          >
+            Next Yos
+          </button>
+          <button
+            className={!finishBtnVisible ? "hidden" : "next_btn btn"}
+            onClick={displayResult}
+          >
+            Finish
+          </button>
+        </footer>
+      </div>
     </div>
   ) : (
     <Result_page
